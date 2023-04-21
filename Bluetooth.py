@@ -1,7 +1,7 @@
 import asyncio
 from bleak import BleakClient
 import time
-import Xbox_Controller as controller
+#import Xbox_Controller as controller
 
 # The MAC address of the Bluetooth Low Energy peripheral device to connect to
 peripheral_address = 'D4:D4:DA:5C:4D:CE'
@@ -23,11 +23,6 @@ async def run():
             data_to_write = bytes(input("Send a message: "), 'UTF-8')
 
             #data_to_write = bytearray(array1 + array2)
-
-            #data_to_write = bytearray(controller.controllerMessage())
-            #print(controller.controllerMessage())
-
-
             # Write data to the characteristic
             await client.write_gatt_char(write_characteristic_uuid, data_to_write)
 
@@ -36,18 +31,7 @@ async def run():
 
             # Print a message to confirm the data was sent
             print('Data sent to peripheral device:', data_to_write)
-            time.sleep(2)
-
-def main():
-    while 1:
-        data_to_write = bytearray(controller.controllerMessage())
-        print(data_to_write)
-        #print(controller.controllerMessage())
-
-        time.sleep(2)
+            time.sleep(1)
 
 
-if __name__ == '__main__':
-    #main()
-    #controller.joystickInit()
-    asyncio.run(run())
+asyncio.run(run())
