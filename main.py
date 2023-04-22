@@ -1,5 +1,7 @@
 import asyncio
+
 from bleak import BleakClient
+
 import Controller as controller
 import Xbox_One_Constants as button
 
@@ -12,9 +14,11 @@ write_characteristic_uuid = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
 # The UUID of the Bluetooth Low Energy characteristic to read from
 read_characteristic_uuid = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
 
+
 # Takes an int list with elements 0 to 256 and returns the list as a byte array
 def listToBytearray(list):
     return bytearray(list)
+
 
 async def main():
     print("Connecting to Microballer")
@@ -35,7 +39,7 @@ async def main():
             data = controller.controllerMessage(joystick)
 
             # If the start button is pressed then disconnect from the server
-            if data[button._Button_Start] != 0:
+            if data[button._Disconnect] != 0:
                 break
 
             # The data to write to the characteristic
