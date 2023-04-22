@@ -3,7 +3,7 @@ from math import trunc
 import pygame
 import time
 
-def joystickInit():
+async def joystickInit():
     # initialize pygame
     pygame.init()
 
@@ -15,10 +15,10 @@ def joystickInit():
     print("Joystick name:", joystick.get_name())
     print("Number of axes:", joystick.get_numaxes())
     print("Number of buttons:", joystick.get_numbuttons())
-    return 0
+    return joystick
 
 # continuously read and print the joystick inputs
-def controllerStream():
+async def controllerStream(joystick):
     i = 0
     while i < 2:
         pygame.event.pump() # pump the event queue
@@ -29,7 +29,7 @@ def controllerStream():
         time.sleep(2)
 
 
-def controllerMessage():
+def controllerMessage(joystick):
     pygame.event.pump()  # pump the event queue
     axes = [(trunc(((joystick.get_axis(i) + 1) / 2) * 256)) for i in range(joystick.get_numaxes())]
     buttons = [joystick.get_button(i) for i in range(joystick.get_numbuttons())]

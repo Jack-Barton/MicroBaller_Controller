@@ -32,6 +32,7 @@ async def run():
             # Print a message to confirm the data was sent
             print('Data sent to peripheral device:', data_to_write)
             time.sleep(1)
+            await asyncio.sleep(1)
 
 
 asyncio.run(run())
