@@ -9,16 +9,13 @@ async def joystickInit():
 
     # get the first connected joystick
     joystick = pygame.joystick.Joystick(0)
+    # initialize the joystick
     joystick.init()
 
-    # print some information about the joystick
-    print("Joystick name:", joystick.get_name())
-    print("Number of axes:", joystick.get_numaxes())
-    print("Number of buttons:", joystick.get_numbuttons())
     return joystick
 
 # continuously read and print the joystick inputs
-async def controllerStream(joystick):
+def controllerStream(joystick):
     i = 0
     while i < 2:
         pygame.event.pump() # pump the event queue
@@ -29,6 +26,7 @@ async def controllerStream(joystick):
         time.sleep(2)
 
 
+# takes the controller and returns the joystick with values normalized between 0 and 256 and buttons (0 or 1) in an array
 def controllerMessage(joystick):
     pygame.event.pump()  # pump the event queue
     axes = [(trunc(((joystick.get_axis(i) + 1) / 2) * 256)) for i in range(joystick.get_numaxes())]
