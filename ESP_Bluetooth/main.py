@@ -72,8 +72,8 @@ class ESP32_BLE():
         elif event == _IRQ_GATTS_WRITE:
             buffer = self.ble.gatts_read(self.rx)
             print(buffer)
-            array = self.messageDecoder(buffer)
-            print(array, "\n")
+            self.message = self.messageDecoder(buffer)
+            print(self.message, "\n")
 
     # Construct and register the server (NUS) and assign its characteristics (RX and TX)
     def register(self):

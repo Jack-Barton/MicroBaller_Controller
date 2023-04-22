@@ -17,3 +17,6 @@ To Run:
 - Then run main.py
 - Wait for the terminal to indicate the client is connected anf the joystick is detected 
 - The gatt client on the computer should now be connected to the ESP and should be sending the controller data across to the ESP 
+
+ESP_Bluetooth
+In the ESP_Bluetooth directory is main.py. main.py is the working micropython file that starts the server and reads the 
