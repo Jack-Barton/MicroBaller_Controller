@@ -14,7 +14,7 @@ async def joystickInit():
 
     return joystick
 
-# continuously read and print the joystick inputs
+# continuously read and print the raw joystick input values
 def controllerStream(joystick):
     i = 0
     while i < 2:
@@ -33,3 +33,7 @@ def controllerMessage(joystick):
     buttons = [joystick.get_button(i) for i in range(joystick.get_numbuttons())]
     return axes + buttons
 
+if __name__ == '__main__':
+    joystick = joystickInit()
+    while 1:
+        print(controllerMessage(joystick))
