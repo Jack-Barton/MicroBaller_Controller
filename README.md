@@ -20,3 +20,4 @@ To Run:
 
 ESP_Bluetooth:
 - In the ESP_Bluetooth directory is main.py. main.py is the working micropython file that starts the server and reads the messages from the client decoding them back to an integer list with joystick/trigger values 0 to 256 and button values 0 or 1
+- The ESP32 should contain the main.py in ESP_Bluetooth and the Xbox_One_Constants.py
