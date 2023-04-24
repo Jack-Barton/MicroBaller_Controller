@@ -29,7 +29,7 @@ async def main():
 
         print("Connecting to Controller")
         # Initialise the joystick reader
-        joystick = await controller.joystickInit()
+        joystick = controller.joystickInit()
         # Joystick has been initiated
         print(joystick.get_name(), "Connected \n")
 

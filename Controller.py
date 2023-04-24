@@ -1,9 +1,10 @@
+import time
 from math import trunc
 
 import pygame
-import time
 
-async def joystickInit():
+
+def joystickInit():
     # initialize pygame
     pygame.init()
 
@@ -16,8 +17,7 @@ async def joystickInit():
 
 # continuously read and print the raw joystick input values
 def controllerStream(joystick):
-    i = 0
-    while i < 2:
+    while 1:
         pygame.event.pump() # pump the event queue
         axes = [joystick.get_axis(i) for i in range(joystick.get_numaxes())]
         buttons = [joystick.get_button(i) for i in range(joystick.get_numbuttons())]
@@ -36,4 +36,4 @@ def controllerMessage(joystick):
 if __name__ == '__main__':
     joystick = joystickInit()
     while 1:
-        print(controllerMessage(joystick))
+        print(controllerStream(joystick))

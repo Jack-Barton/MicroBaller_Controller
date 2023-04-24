@@ -27,3 +27,5 @@ _Unknown_6              = 21
 _Disconnect             = _Button_Start
 _Acceleration           = _Trigger_Left
 _Turning                = _Axis_Left_LR
+
+# list[_Acceleration]
