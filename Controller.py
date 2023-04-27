@@ -36,4 +36,5 @@ def controllerMessage(joystick):
 if __name__ == '__main__':
     joystick = joystickInit()
     while 1:
-        print(controllerStream(joystick))
+        print(controllerMessage(joystick))
+        time.sleep(2)
