@@ -2,17 +2,23 @@ import asyncio
 
 from bleak import BleakClient
 
-import Controller as controller
-import Xbox_One_Constants as button
+import Controller
+import Xbox_One_Constants as Button
 
-# The MAC address of the Bluetooth Low Energy peripheral device to connect to
-# (Run the scaner to detect your device address)
-peripheral_address = 'D4:D4:DA:5C:4D:CE'
+microballer_address = 'D4:D4:DA:5C:4D:CE'
+"""
+The MAC address of the MicroBaller server.
+"""
 
-# The UUID of the Bluetooth Low Energy characteristic to write to
 write_characteristic_uuid = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
-# The UUID of the Bluetooth Low Energy characteristic to read from
+"""
+The UUID of the MicroBaller Bluetooth Low Energy characteristic to write to.
+"""
+
 read_characteristic_uuid = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
+"""
+The UUID of the Bluetooth Low Energy characteristic to read from
+"""
 
 
 # Takes an int list with elements 0 to 256 and returns the list as a byte array
@@ -29,46 +35,37 @@ def listToBytearray(listToChange):
 
 async def main():
     """
-
-    :return:
+    Creates the BLE client and sends the controller outputs to the BLE server at 10Hz indefinitely.
     """
     print("Connecting to Microballer")
-    # Create Bleak client (when function finished it will disconnect)
-    async with BleakClient(peripheral_address) as client:
+    async with BleakClient(microballer_address) as client:  # Create bleak client
         # The client has connected to the server
         print("Microballer Connected")
-
         print("Connecting to Controller")
-        # Initialise the activeController reader
-        activeController = controller.controllerInit()
+
+        activeController = Controller.controllerInit()  # Initialise the activeController reader
         # Joystick has been initiated
         print(activeController.get_name(), "Connected \n")
 
         while 1:
 
-            # Get the controller output array
-            messageList = controller.controllerMessage(activeController)
+            messageList = Controller.controllerMessage(activeController)  # Get the controller output array
 
             # If the start button is pressed then disconnect from the server
-            if messageList[button._Disconnect] != 0:
+            if messageList[Button._Disconnect] != 0:
                 break
 
-            # The messageList to write to the characteristic
-            messageToSend = listToBytearray(messageList)
+            messageToSend = listToBytearray(messageList)  # Convert controller output array to byte array
 
-            # Write the messageList to the write characteristic of the server
-            await client.write_gatt_char(write_characteristic_uuid, messageToSend)
+            await client.write_gatt_char(write_characteristic_uuid,
+                                         messageToSend)  # Write the messageList to the write characteristic of the server
 
-            # Print the 0 to 256 activeController integer values
-            print('Data sent to peripheral device integer:', messageList)
-            # Print the hexadecimal activeController values
-            print('Data sent to peripheral device hexadecimal:', messageToSend, '\n')
+            print('Data sent to peripheral device integer:', messageList)  # Print int message array
+            print('Data sent to peripheral device hexadecimal:', messageToSend, '\n')  # Print message byte array
 
-            # Wait 100ms before sending another message
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.1)  # Wait 100ms before sending another message
 
-        # Print disconnection status
-        print("Disconnecting from Microballer")
+        print("Disconnecting from Microballer")  # Print disconnection status
         # Disconnect from the server
 
 

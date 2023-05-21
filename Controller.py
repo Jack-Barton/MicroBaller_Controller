@@ -22,7 +22,6 @@ def controllerStream(controller):
     Indefinitely reads then prints the axes and button values of controller respectively to the system out.
 
     :param controller: controller object.
-    :return: N/A
     """
 
     while 1:
