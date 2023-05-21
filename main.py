@@ -16,11 +16,22 @@ read_characteristic_uuid = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
 
 
 # Takes an int list with elements 0 to 256 and returns the list as a byte array
-def listToBytearray(list):
-    return bytearray(list)
+def listToBytearray(listToChange):
+    """
+    Converts the given list into a byte array.
+
+    :param listToChange: The list to be changed
+    :return: A byte array of the given list with values from 0 to 255
+    """
+
+    return bytearray(listToChange)
 
 
 async def main():
+    """
+
+    :return:
+    """
     print("Connecting to Microballer")
     # Create Bleak client (when function finished it will disconnect)
     async with BleakClient(peripheral_address) as client:
@@ -28,30 +39,30 @@ async def main():
         print("Microballer Connected")
 
         print("Connecting to Controller")
-        # Initialise the joystick reader
-        joystick = controller.joystickInit()
+        # Initialise the activeController reader
+        activeController = controller.controllerInit()
         # Joystick has been initiated
-        print(joystick.get_name(), "Connected \n")
+        print(activeController.get_name(), "Connected \n")
 
         while 1:
 
             # Get the controller output array
-            data = controller.controllerMessage(joystick)
+            messageList = controller.controllerMessage(activeController)
 
             # If the start button is pressed then disconnect from the server
-            if data[button._Disconnect] != 0:
+            if messageList[button._Disconnect] != 0:
                 break
 
-            # The data to write to the characteristic
-            data_to_write = listToBytearray(data)
+            # The messageList to write to the characteristic
+            messageToSend = listToBytearray(messageList)
 
-            # Write the data to the write characteristic of the server
-            await client.write_gatt_char(write_characteristic_uuid, data_to_write)
+            # Write the messageList to the write characteristic of the server
+            await client.write_gatt_char(write_characteristic_uuid, messageToSend)
 
-            # Print the 0 to 256 joystick integer values
-            print('Data sent to peripheral device integer:', data)
-            # Print the hexadecimal joystick values
-            print('Data sent to peripheral device hexadecimal:', data_to_write, '\n')
+            # Print the 0 to 256 activeController integer values
+            print('Data sent to peripheral device integer:', messageList)
+            # Print the hexadecimal activeController values
+            print('Data sent to peripheral device hexadecimal:', messageToSend, '\n')
 
             # Wait 100ms before sending another message
             await asyncio.sleep(0.1)
